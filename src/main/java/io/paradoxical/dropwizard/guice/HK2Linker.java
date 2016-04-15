@@ -1,7 +1,7 @@
 package io.paradoxical.dropwizard.guice;
 
 import com.google.inject.Injector;
-import com.squarespace.jersey2.guice.BootstrapUtils;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import org.glassfish.hk2.api.ServiceLocator;
 import javax.inject.Inject;
 
@@ -15,8 +15,8 @@ import javax.inject.Inject;
 public class HK2Linker {
     @Inject
     public HK2Linker(Injector injector, ServiceLocator locator) {
-        BootstrapUtils.link(locator, injector);
-        BootstrapUtils.install(locator);
+        JerseyGuiceUtils.link(locator, injector);
+        JerseyGuiceUtils.install(injector);
     }
 
 }

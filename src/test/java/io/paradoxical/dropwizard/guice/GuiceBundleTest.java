@@ -1,8 +1,8 @@
 package io.paradoxical.dropwizard.guice;
 
 import com.google.inject.Injector;
+import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import io.paradoxical.dropwizard.guice.objects.TestModule;
-import com.squarespace.jersey2.guice.BootstrapUtils;
 import io.dropwizard.Configuration;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.setup.Bootstrap;
@@ -30,7 +30,7 @@ public class GuiceBundleTest {
 
     @After
     public void tearDown() {
-        BootstrapUtils.reset();
+        JerseyGuiceUtils.reset();
     }
 
     @Before
