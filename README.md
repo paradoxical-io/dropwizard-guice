@@ -1,4 +1,5 @@
 # Dropwizard-Guice
+Forked from HubSpot/Dropwizard-Guice and repurposed (they did all the hard work)
 A simple DropWizard extension for integrating Guice via a bundle. It optionally uses classpath 
 scanning courtesy of the Reflections project to discover resources and more to install into 
 the dropwizard environment upon service start.
