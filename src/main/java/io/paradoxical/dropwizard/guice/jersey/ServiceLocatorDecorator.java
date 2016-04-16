@@ -1,4 +1,4 @@
-package io.paradoxical.dropwizard.guice;
+package io.paradoxical.dropwizard.guice.jersey;
 
 import org.glassfish.hk2.api.ActiveDescriptor;
 import org.glassfish.hk2.api.Descriptor;

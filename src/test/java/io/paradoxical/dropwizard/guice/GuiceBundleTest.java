@@ -2,12 +2,14 @@ package io.paradoxical.dropwizard.guice;
 
 import com.google.inject.Injector;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
-import io.paradoxical.dropwizard.guice.objects.TestModule;
 import io.dropwizard.Configuration;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.paradoxical.dropwizard.guice.jersey.JerseyModule;
+import io.paradoxical.dropwizard.guice.objects.TestModule;
 import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.extension.ServiceLocatorGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +55,9 @@ public class GuiceBundleTest {
     }
 
     @Test
-    public void serviceLocatorIsAvaliable () throws ServletException {
-        ServiceLocator serviceLocator = guiceBundle.getInjector().getInstance(ServiceLocator.class);
+    public void serviceLocatorIsAvailable() throws ServletException {
+        ServiceLocator serviceLocator = JerseyModule.getLocator(guiceBundle.getInjector())
+                                                   ;
         assertThat(serviceLocator).isNotNull();
     }
 }

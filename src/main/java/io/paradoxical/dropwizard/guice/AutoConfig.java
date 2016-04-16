@@ -1,6 +1,7 @@
 package io.paradoxical.dropwizard.guice;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.ImplementedBy;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -13,6 +14,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import org.glassfish.jersey.server.model.Resource;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -29,7 +31,6 @@ import javax.ws.rs.ext.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
 import java.util.Optional;
-import java.util.Set;
 
 public class AutoConfig {
     private static final Logger logger = LoggerFactory.getLogger(AutoConfig.class);
@@ -37,8 +38,12 @@ public class AutoConfig {
     @Getter(AccessLevel.PROTECTED)
     private final Reflections reflections;
 
-    public AutoConfig(String... basePackages) {
-        Preconditions.checkArgument(basePackages.length > 0);
+    public static AutoConfigBuilder builder() {
+        return new AutoConfigBuilder();
+    }
+
+    public AutoConfig(@NonNull ImmutableSet<String> basePackages) {
+        Preconditions.checkArgument(!basePackages.isEmpty());
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         FilterBuilder filterBuilder = new FilterBuilder();

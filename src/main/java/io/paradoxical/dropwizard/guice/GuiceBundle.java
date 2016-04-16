@@ -1,6 +1,5 @@
 package io.paradoxical.dropwizard.guice;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -12,12 +11,15 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.paradoxical.dropwizard.guice.jersey.JerseyModule;
+import io.paradoxical.dropwizard.guice.jersey.JerseyUtil;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 
 public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T> {
 
@@ -34,8 +36,8 @@ public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T>
     public static class Builder<T extends Configuration> {
         private AutoConfig autoConfig;
         private List<Module> modules = Lists.newArrayList();
-        private Optional<Class<T>> configurationClass = Optional.absent();
-        private InjectorFactory injectorFactory = new InjectorFactoryImpl();
+        private Optional<Class<T>> configurationClass = Optional.empty();
+        private InjectorFactory injectorFactory = new DefaultInjectorFactory();
 
         public Builder<T> addModule(Module module) {
             Preconditions.checkNotNull(module);
@@ -55,10 +57,12 @@ public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T>
         }
 
         public Builder<T> enableAutoConfig(String... basePackages) {
-            Preconditions.checkNotNull(basePackages.length > 0);
+            Preconditions.checkArgument(basePackages.length > 0);
             Preconditions.checkArgument(autoConfig == null, "autoConfig already enabled!");
-            autoConfig = new AutoConfig(basePackages);
-            return this;
+            return enableAutoConfig(
+                AutoConfig.builder()
+                          .searchPackages(basePackages)
+                          .build());
         }
 
         public Builder<T> enableAutoConfig(@Nonnull @NonNull final AutoConfig autoConfig) {
@@ -74,14 +78,19 @@ public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T>
         public GuiceBundle<T> build(Stage s) {
             return new GuiceBundle<>(s, autoConfig, modules, configurationClass, injectorFactory);
         }
-
     }
 
     public static <T extends Configuration> Builder<T> newBuilder() {
         return new Builder<>();
     }
 
-    private GuiceBundle(Stage stage, AutoConfig autoConfig, List<Module> modules, Optional<Class<T>> configurationClass, InjectorFactory injectorFactory) {
+    private GuiceBundle(
+        final Stage stage,
+        final AutoConfig autoConfig,
+        final List<Module> modules,
+        final Optional<Class<T>> configurationClass,
+        final InjectorFactory injectorFactory) {
+
         Preconditions.checkNotNull(modules);
         Preconditions.checkArgument(!modules.isEmpty());
         Preconditions.checkNotNull(stage);
@@ -96,7 +105,8 @@ public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T>
     public void initialize(Bootstrap<?> bootstrap) {
         if (configurationClass.isPresent()) {
             dropwizardEnvironmentModule = new DropwizardEnvironmentModule<>(configurationClass.get());
-        } else {
+        }
+        else {
             dropwizardEnvironmentModule = new DropwizardEnvironmentModule<>(Configuration.class);
         }
         modules.add(new JerseyModule());
@@ -112,8 +122,9 @@ public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T>
     @SuppressFBWarnings("DM_EXIT")
     private void initInjector() {
         try {
-            injector = injectorFactory.create(this.stage,ImmutableList.copyOf(this.modules));
-        } catch(Exception ie) {
+            injector = injectorFactory.create(this.stage, ImmutableList.copyOf(this.modules));
+        }
+        catch (Exception ie) {
             logger.error("Exception occurred when creating Guice Injector - exiting", ie);
             System.exit(1);
         }

@@ -28,7 +28,9 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AutoConfigTest {
@@ -42,7 +44,9 @@ public class AutoConfigTest {
     @Before
     public void setUp() {
         //when
-        autoConfig = new AutoConfig(getClass().getPackage().getName());
+        autoConfig = AutoConfig.builder()
+                               .searchPackages(getClass().getPackage().getName())
+                               .build();
     }
 
     @Test

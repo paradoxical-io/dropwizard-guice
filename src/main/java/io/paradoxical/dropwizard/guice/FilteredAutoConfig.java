@@ -1,5 +1,7 @@
 package io.paradoxical.dropwizard.guice;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.lang.annotation.Annotation;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -8,15 +10,9 @@ import java.util.stream.StreamSupport;
 public class FilteredAutoConfig extends AutoConfig {
     private final Predicate<Class<?>> typePredicate;
 
-    public FilteredAutoConfig withAnnotation(Class<? extends Annotation> annotation) {
-        return new FilteredAutoConfig(type -> type.isAnnotationPresent(annotation));
-    }
 
-    public FilteredAutoConfig withoutAnnotation(Class<? extends Annotation> annotation) {
-        return new FilteredAutoConfig(type -> !type.isAnnotationPresent(annotation));
-    }
-
-    private FilteredAutoConfig(Predicate<Class<?>> typePredicate) {
+    FilteredAutoConfig(Predicate<Class<?>> typePredicate, ImmutableSet<String> packages) {
+        super(packages);
         this.typePredicate = typePredicate;
     }
 

@@ -45,7 +45,6 @@ public class InjectedIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void shouldGetExplicitMessage() {
 
         // when
@@ -59,7 +58,6 @@ public class InjectedIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void shouldGetJitMessage() {
 
         // when
