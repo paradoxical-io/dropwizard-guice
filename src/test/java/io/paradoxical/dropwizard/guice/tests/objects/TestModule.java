@@ -1,4 +1,4 @@
-package io.paradoxical.dropwizard.guice.objects;
+package io.paradoxical.dropwizard.guice.tests.objects;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;

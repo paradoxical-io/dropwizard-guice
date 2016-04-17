@@ -1,4 +1,4 @@
-package io.paradoxical.dropwizard.guice;
+package io.paradoxical.dropwizard.guice.healthChecks;
 
 import com.codahale.metrics.health.HealthCheck;
 

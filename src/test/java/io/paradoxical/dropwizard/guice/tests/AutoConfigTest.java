@@ -1,23 +1,25 @@
-package io.paradoxical.dropwizard.guice;
+package io.paradoxical.dropwizard.guice.tests;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.Bundle;
 import io.dropwizard.jackson.Jackson;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.lifecycle.setup.LifecycleEnvironment;
 import io.dropwizard.servlets.tasks.Task;
 import io.dropwizard.setup.AdminEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.paradoxical.dropwizard.guice.objects.ExplicitResource;
-import io.paradoxical.dropwizard.guice.objects.InjectedBundle;
-import io.paradoxical.dropwizard.guice.objects.InjectedHealthCheck;
-import io.paradoxical.dropwizard.guice.objects.InjectedManaged;
-import io.paradoxical.dropwizard.guice.objects.InjectedProvider;
-import io.paradoxical.dropwizard.guice.objects.InjectedTask;
-import io.paradoxical.dropwizard.guice.objects.ResourceInterface;
-import io.paradoxical.dropwizard.guice.objects.TestModule;
+import io.paradoxical.dropwizard.guice.AutoConfig;
+import io.paradoxical.dropwizard.guice.tests.objects.ExplicitResource;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedBundle;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedHealthCheck;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedManaged;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedProvider;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedTask;
+import io.paradoxical.dropwizard.guice.tests.objects.ResourceInterface;
+import io.paradoxical.dropwizard.guice.tests.objects.TestModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +41,8 @@ public class AutoConfigTest {
 
     @Spy
     private Environment environment = new Environment("test env", Jackson.newObjectMapper(), null, null, null);
+    public final JerseyEnvironment jerseyEnvironment = environment.jersey();
+
     private AutoConfig autoConfig;
 
     @Before
@@ -56,7 +60,7 @@ public class AutoConfigTest {
         Bundle singletonBundle = injector.getInstance(InjectedBundle.class);
 
         //when
-        autoConfig.initialize(bootstrap, injector);
+        autoConfig.addDiscoveredBundles(bootstrap, injector);
 
         verify(bootstrap).addBundle(singletonBundle);
     }
@@ -64,7 +68,7 @@ public class AutoConfigTest {
     @Test
     public void addInjectableHealthChecks() {
         //when
-        autoConfig.run(environment, injector);
+        autoConfig.run(environment, jerseyEnvironment, injector);
 
         // then
         SortedSet<String> healthChecks = environment.healthChecks().getNames();
@@ -74,7 +78,7 @@ public class AutoConfigTest {
     @Test
     public void addProviders() {
         // when
-        autoConfig.run(environment, injector);
+        autoConfig.run(environment, jerseyEnvironment, injector);
 
         //then
         Set<Class<?>> components = environment.jersey().getResourceConfig().getClasses();
@@ -84,7 +88,7 @@ public class AutoConfigTest {
     @Test
     public void addResources() {
         //when
-        autoConfig.run(environment, injector);
+        autoConfig.run(environment, jerseyEnvironment, injector);
 
         //then
         Set<Class<?>> components = environment.jersey().getResourceConfig().getClasses();
@@ -94,7 +98,7 @@ public class AutoConfigTest {
     @Test
     public void interfaceResourcesNotAdded() {
         //when
-        autoConfig.run(environment, injector);
+        autoConfig.run(environment, jerseyEnvironment, injector);
 
         //then
         Set<Class<?>> components = environment.jersey().getResourceConfig().getClasses();
@@ -107,7 +111,7 @@ public class AutoConfigTest {
         when(environment.admin()).thenReturn(mock(AdminEnvironment.class));
 
         //when
-        autoConfig.run(environment, injector);
+        autoConfig.run(environment, jerseyEnvironment, injector);
 
         //then
         Task task = injector.getInstance(InjectedTask.class);
@@ -123,7 +127,7 @@ public class AutoConfigTest {
         when(environment.lifecycle()).thenReturn(mock(LifecycleEnvironment.class));
 
         //when
-        autoConfig.run(environment, injector);
+        autoConfig.run(environment, jerseyEnvironment, injector);
 
         //then
         verify(environment.lifecycle()).manage(managed);

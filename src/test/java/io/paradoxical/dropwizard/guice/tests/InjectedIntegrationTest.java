@@ -1,16 +1,15 @@
-package io.paradoxical.dropwizard.guice;
+package io.paradoxical.dropwizard.guice.tests;
 
 import com.google.common.io.Resources;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
-import io.paradoxical.dropwizard.guice.objects.InjectedBundle;
-import io.paradoxical.dropwizard.guice.objects.TestApplication;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedBundle;
+import io.paradoxical.dropwizard.guice.tests.objects.TestApplication;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;

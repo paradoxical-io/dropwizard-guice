@@ -11,7 +11,8 @@ public class FilteredAutoConfig extends AutoConfig {
     private final Predicate<Class<?>> typePredicate;
 
 
-    FilteredAutoConfig(Predicate<Class<?>> typePredicate, ImmutableSet<String> packages) {
+    FilteredAutoConfig(final ImmutableSet<String> packages,
+                       Predicate<Class<?>> typePredicate) {
         super(packages);
         this.typePredicate = typePredicate;
     }

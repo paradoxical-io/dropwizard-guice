@@ -8,10 +8,13 @@ import com.google.inject.Key;
 import com.google.inject.ProvidedBy;
 import io.dropwizard.Bundle;
 import io.dropwizard.ConfiguredBundle;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.servlets.tasks.Task;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.paradoxical.dropwizard.guice.bundles.GuiceBundle;
+import io.paradoxical.dropwizard.guice.healthChecks.InjectableHealthCheck;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -42,7 +45,8 @@ public class AutoConfig {
         return new AutoConfigBuilder();
     }
 
-    public AutoConfig(@NonNull ImmutableSet<String> basePackages) {
+    public AutoConfig(@NonNull final ImmutableSet<String> basePackages) {
+
         Preconditions.checkArgument(!basePackages.isEmpty());
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -60,18 +64,51 @@ public class AutoConfig {
         this.reflections = new Reflections(configurationBuilder);
     }
 
-    public void run(Environment environment, Injector injector) {
+    public void run(final Environment environment, final JerseyEnvironment jerseyEnvironment, final Injector injector) {
         addHealthChecks(environment, injector);
-        addProviders(environment);
-        addResources(environment);
         addTasks(environment, injector);
         addManaged(environment, injector);
-        addParamConverterProviders(environment);
+
+        addProviders(jerseyEnvironment);
+        addResources(jerseyEnvironment);
+        addParamConverterProviders(jerseyEnvironment);
     }
 
-    public void initialize(Bootstrap<?> bootstrap, Injector injector) {
+    public void addDiscoveredBundles(Bootstrap<?> bootstrap, Injector injector) {
         addBundles(bootstrap, injector);
         addConfiguredBundles(bootstrap, injector);
+    }
+
+    protected void addProviders(final JerseyEnvironment jerseyEnvironment) {
+        Iterable<Class<?>> providerClasses = getTypesAnnotatedWith(Provider.class);
+
+        for (Class<?> provider : providerClasses) {
+
+            jerseyEnvironment.register(provider);
+            logger.info("Added provider class: {}", provider);
+        }
+    }
+
+    protected void addResources(final JerseyEnvironment jerseyEnvironment) {
+        Iterable<Class<?>> resourceClasses = getTypesAnnotatedWith(Path.class);
+
+        for (Class<?> resource : resourceClasses) {
+            if (Resource.isAcceptable(resource)) {
+
+                jerseyEnvironment.register(resource);
+                logger.info("Added resource class: {}", resource);
+            }
+        }
+    }
+
+    protected void addParamConverterProviders(final JerseyEnvironment jerseyEnvironment) {
+        Iterable<Class<? extends ParamConverterProvider>> paramConverters = getSubTypesOf(ParamConverterProvider.class);
+
+        for (Class<?> paramConverter : paramConverters) {
+
+            jerseyEnvironment.register(paramConverter);
+            logger.info("Added ParamConverterProvider class: {}", paramConverter);
+        }
     }
 
     protected void addManaged(Environment environment, Injector injector) {
@@ -110,37 +147,6 @@ public class AutoConfig {
         }
     }
 
-    protected void addProviders(Environment environment) {
-        Iterable<Class<?>> providerClasses = getTypesAnnotatedWith(Provider.class);
-
-        for (Class<?> provider : providerClasses) {
-            registerOnEnvironment(environment, provider, "Added provider class: {}");
-        }
-    }
-
-    protected void addResources(Environment environment) {
-        Iterable<Class<?>> resourceClasses = getTypesAnnotatedWith(Path.class);
-
-        for (Class<?> resource : resourceClasses) {
-            if (Resource.isAcceptable(resource)) {
-                registerOnEnvironment(environment, resource, "Added resource class: {}");
-            }
-        }
-    }
-
-    protected Iterable<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotationType) {
-        return reflections.getTypesAnnotatedWith(annotationType);
-    }
-
-    protected void registerOnEnvironment(
-        final Environment environment,
-        final Class<?> resource,
-        final String logMessage) {
-
-        environment.jersey().register(resource);
-        logger.info(logMessage, resource);
-    }
-
     protected void addBundles(Bootstrap<?> bootstrap, Injector injector) {
         Iterable<Class<? extends Bundle>> bundleClasses = getSubTypesOf(Bundle.class);
 
@@ -167,12 +173,8 @@ public class AutoConfig {
         }
     }
 
-    protected void addParamConverterProviders(Environment environment) {
-        Iterable<Class<? extends ParamConverterProvider>> providerClasses = getSubTypesOf(ParamConverterProvider.class);
-
-        for (Class<?> provider : providerClasses) {
-            registerOnEnvironment(environment, provider, "Added ParamConverterProvider class: {}");
-        }
+    protected Iterable<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotationType) {
+        return reflections.getTypesAnnotatedWith(annotationType);
     }
 
     protected <T> Iterable<Class<? extends T>> getSubTypesOf(Class<T> baseType) {

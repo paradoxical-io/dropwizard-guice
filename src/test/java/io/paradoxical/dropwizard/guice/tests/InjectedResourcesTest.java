@@ -1,7 +1,7 @@
-package io.paradoxical.dropwizard.guice;
+package io.paradoxical.dropwizard.guice.tests;
 
-import io.paradoxical.dropwizard.guice.objects.ExplicitDAO;
-import io.paradoxical.dropwizard.guice.objects.ExplicitResource;
+import io.paradoxical.dropwizard.guice.tests.objects.ExplicitDAO;
+import io.paradoxical.dropwizard.guice.tests.objects.ExplicitResource;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.junit.ClassRule;
 import org.junit.Test;

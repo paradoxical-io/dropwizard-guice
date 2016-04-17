@@ -1,4 +1,4 @@
-package io.paradoxical.dropwizard.guice.objects;
+package io.paradoxical.dropwizard.guice.tests.objects;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.inject.Singleton;

@@ -1,12 +1,12 @@
-package io.paradoxical.dropwizard.guice;
+package io.paradoxical.dropwizard.guice.tests;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import io.paradoxical.dropwizard.guice.jersey.JerseyModule;
-import io.paradoxical.dropwizard.guice.objects.ExplicitResource;
-import io.paradoxical.dropwizard.guice.objects.JitResource;
-import io.paradoxical.dropwizard.guice.objects.TestModule;
+import io.paradoxical.dropwizard.guice.tests.objects.ExplicitResource;
+import io.paradoxical.dropwizard.guice.tests.objects.JitResource;
+import io.paradoxical.dropwizard.guice.tests.objects.TestModule;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.junit.AfterClass;
 import org.junit.Test;

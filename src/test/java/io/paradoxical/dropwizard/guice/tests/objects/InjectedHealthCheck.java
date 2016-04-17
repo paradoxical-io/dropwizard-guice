@@ -1,6 +1,6 @@
-package io.paradoxical.dropwizard.guice.objects;
+package io.paradoxical.dropwizard.guice.tests.objects;
 
-import io.paradoxical.dropwizard.guice.InjectableHealthCheck;
+import io.paradoxical.dropwizard.guice.healthChecks.InjectableHealthCheck;
 
 public class InjectedHealthCheck extends InjectableHealthCheck {
     @Override

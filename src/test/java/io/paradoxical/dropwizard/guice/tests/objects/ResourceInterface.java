@@ -1,4 +1,4 @@
-package io.paradoxical.dropwizard.guice.objects;
+package io.paradoxical.dropwizard.guice.tests.objects;
 
 import javax.ws.rs.Path;
 

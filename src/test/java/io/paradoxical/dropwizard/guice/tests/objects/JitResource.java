@@ -1,4 +1,4 @@
-package io.paradoxical.dropwizard.guice.objects;
+package io.paradoxical.dropwizard.guice.tests.objects;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
