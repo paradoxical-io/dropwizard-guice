@@ -4,18 +4,21 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
-import io.paradoxical.dropwizard.guice.admin.AdminEnvironmentConfigurator;
 import io.paradoxical.dropwizard.guice.EnvironmentData;
 import io.paradoxical.dropwizard.guice.GuiceEnvironmentConfiguration;
+import io.paradoxical.dropwizard.guice.admin.AdminEnvironmentConfigurator;
 import io.paradoxical.dropwizard.guice.admin.AdminResourceEnvironment;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Singular;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
 public class AdminGuiceBundle<T extends Configuration> extends GuiceBundle<T> {
     private static final CharMatcher wildcardMatcher = CharMatcher.anyOf("/*");
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdminGuiceBundle.class);
 
     @Nonnull
     private final ImmutableList<AdminEnvironmentConfigurator> environmentConfigurators;
@@ -45,6 +48,7 @@ public class AdminGuiceBundle<T extends Configuration> extends GuiceBundle<T> {
         setupEnvironmentGuice(configuration, EnvironmentData.admin(adminResourceEnvironment));
         environmentConfigurators.forEach(configure -> configure.configure(configuration, adminResourceEnvironment));
 
+        LOGGER.info("Setup an admin environment at uri {}", adminRootPath);
         adminResourceEnvironment.adminResourceConfig()
                                 .logComponents();
 
