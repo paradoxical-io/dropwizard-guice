@@ -4,7 +4,7 @@
 
     <groupId>io.paradoxical</groupId>
     <artifactId>dropwizard-guice</artifactId>
-    <version>1.0.0-rc2</version>
+    <version>${dropwizard.version}${revision}</version>
     <description>Simple library for using Guice DI in a dropwizard service forked from hubspot/dropwizard-guice.</description>
     <url>https://github.com/paradoxical-io/dropwizard-guice</url>
 
@@ -24,9 +24,13 @@
     </developers>
 
     <properties>
+        <revision>-SNAPSHOT</revision>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <java.version>1.8</java.version>
-        <dropwizard.version>${project.version}</dropwizard.version>
-        <dep.guava.version>19.0</dep.guava.version>
+
+        <dropwizard.version>1.0.0-rc2</dropwizard.version>
     </properties>
 
     <dependencies>
@@ -187,4 +191,44 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>sign</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <defaultKeyring>false</defaultKeyring>
+                            <keyname>476C78DF</keyname>
+                            <passphrase>${env.GPG_PASSWORD}</passphrase>
+                            <publicKeyring>${project.basedir}/gpg/paradoxical-io.gpg</publicKeyring>
+                            <secretKeyring>${project.basedir}/gpg/paradoxical-io-private.gpg</secretKeyring>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
