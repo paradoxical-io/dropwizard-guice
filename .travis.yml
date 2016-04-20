@@ -13,5 +13,3 @@ notifications:
 before_install:
 - openssl aes-256-cbc -K $encrypted_a33ee4bcce29_key -iv $encrypted_a33ee4bcce29_iv
   -in gpg/paradoxical-io-private.gpg.enc -out gpg/paradoxical-io-private.gpg -d
-- openssl aes-256-cbc -K $encrypted_a33ee4bcce29_key -iv $encrypted_a33ee4bcce29_iv
-  -in gpg/paradoxical-io.gpg.enc -out gpg/paradoxical-io.gpg -d
