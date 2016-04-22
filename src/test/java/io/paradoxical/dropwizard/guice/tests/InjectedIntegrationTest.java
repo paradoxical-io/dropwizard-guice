@@ -2,15 +2,14 @@ package io.paradoxical.dropwizard.guice.tests;
 
 import com.google.common.io.Resources;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
-import io.paradoxical.dropwizard.guice.tests.objects.InjectedBundle;
-import io.paradoxical.dropwizard.guice.tests.objects.TestApplication;
 import io.dropwizard.Configuration;
 import io.dropwizard.client.JerseyClientBuilder;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Ignore;
+import io.paradoxical.dropwizard.guice.tests.objects.InjectedBundle;
+import io.paradoxical.dropwizard.guice.tests.objects.TestApplication;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;
@@ -20,39 +19,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class InjectedIntegrationTest {
 
-    @ClassRule
-    public static final DropwizardAppRule<Configuration> RULE =
-            new DropwizardAppRule<>(TestApplication.class, resourceFilePath("test-config.yml"));
+    @Rule
+    public final DropwizardAppRule<Configuration> RULE =
+        new DropwizardAppRule<>(TestApplication.class, resourceFilePath("test-config.yml"));
 
-    protected static Client client;
+    protected Client client;
 
-    @BeforeClass
-    public static void setUp() {
+    @Before
+    public void setUp() {
         client = new JerseyClientBuilder(RULE.getEnvironment()).build("test client");
     }
 
-    @AfterClass
-    public static void tearDown() {
+    @After
+    public void tearDown() {
         JerseyGuiceUtils.reset();
     }
 
     public static String resourceFilePath(String resourceClassPathLocation) {
         try {
             return new File(Resources.getResource(resourceClassPathLocation).toURI()).getAbsolutePath();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
-    @Ignore
     public void shouldGetExplicitMessage() {
 
         // when
         final String message = client.target(
-                String.format("http://localhost:%d//explicit/message", RULE.getLocalPort()))
-                .request()
-                .get(String.class);
+            String.format("http://localhost:%d//explicit/message", RULE.getLocalPort()))
+                                     .request()
+                                     .get(String.class);
 
         // then
         assertThat(message).isEqualTo("this DAO was bound explicitly");
@@ -63,9 +62,9 @@ public class InjectedIntegrationTest {
 
         // when
         final String message = client.target(
-                String.format("http://localhost:%d//jit/message", RULE.getLocalPort()))
-                .request()
-                .get(String.class);
+            String.format("http://localhost:%d//jit/message", RULE.getLocalPort()))
+                                     .request()
+                                     .get(String.class);
 
         // then
         assertThat(message).isEqualTo("this DAO was bound just-in-time");
