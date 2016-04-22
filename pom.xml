@@ -31,6 +31,7 @@
         <java.version>1.8</java.version>
 
         <dropwizard.version>1.0.0-rc2</dropwizard.version>
+        <maven.source.plugin.version>2.4</maven.source.plugin.version>
     </properties>
 
     <dependencies>
