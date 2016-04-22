@@ -10,6 +10,7 @@ import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.ws.rs.client.Client;
@@ -44,6 +45,7 @@ public class InjectedIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void shouldGetExplicitMessage() {
 
         // when
