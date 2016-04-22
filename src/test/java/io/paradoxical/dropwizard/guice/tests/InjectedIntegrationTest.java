@@ -9,6 +9,7 @@ import io.paradoxical.dropwizard.guice.tests.objects.InjectedBundle;
 import io.paradoxical.dropwizard.guice.tests.objects.TestApplication;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -17,6 +18,7 @@ import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class InjectedIntegrationTest {
 
     @Rule
