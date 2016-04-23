@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.paradoxical</groupId>
@@ -7,6 +8,7 @@
     <version>${dropwizard.version}${revision}</version>
     <description>Simple library for using Guice DI in a dropwizard service forked from hubspot/dropwizard-guice.</description>
     <url>https://github.com/paradoxical-io/dropwizard-guice</url>
+    <name>dropwizard-guice</name>
 
     <scm>
         <connection>scm:git:git@github.com:paradoxical-io/dropwizard-guice.git</connection>
@@ -22,6 +24,14 @@
             <email>jakes@outlook.com</email>
         </developer>
     </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://raw.githubusercontent.com/paradoxical-io/common/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <revision>-SNAPSHOT</revision>
