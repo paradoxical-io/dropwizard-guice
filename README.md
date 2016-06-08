@@ -1,18 +1,22 @@
 # Dropwizard-Guice
-Forked from HubSpot/Dropwizard-Guice and repurposed (they did all the hard work)
+[![Build Status](https://travis-ci.org/paradoxical-io/dropwizard-guice.svg?branch=master)](https://travis-ci.org/paradoxical-io/dropwizard-guice)
+[![Maven Central](https://img.shields.io/maven-central/v/io.paradoxical/dropwizard-guice.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22io.paradoxical%22%20AND%20a%3A%22dropwizard-guice%22)
+
+
+Forked from [HubSpot/Dropwizard-Guice](https://github.com/HubSpot/dropwizard-guice) and repurposed (they did all the hard work)
 A simple DropWizard extension for integrating Guice via a bundle. It optionally uses classpath 
 scanning courtesy of the Reflections project to discover resources and more to install into 
 the dropwizard environment upon service start.
 
 ## Usage
 ```xml
-    <dependencies>
-        <dependency>
-            <groupId>com.hubspot.dropwizard</groupId>
-            <artifactId>dropwizard-guice</artifactId>
-            <version>0.8.4.0</version>
-        </dependency>
-    </dependencies>
+<dependencies>
+    <dependency>
+        <groupId>io.paradoxical</groupId>
+        <artifactId>dropwizard-guice</artifactId>
+        <version>1.0.0-rc3</version>
+    </dependency>
+</dependencies>
 ```
 
 A list of available versions can be found at https://github.com/HubSpot/dropwizard-guice/releases

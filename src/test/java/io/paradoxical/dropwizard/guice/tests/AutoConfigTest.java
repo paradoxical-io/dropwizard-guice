@@ -1,5 +1,6 @@
 package io.paradoxical.dropwizard.guice.tests;
 
+import com.codahale.metrics.MetricRegistry;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.Bundle;
@@ -40,7 +41,7 @@ public class AutoConfigTest {
     private final Injector injector = Guice.createInjector(new TestModule());
 
     @Spy
-    private Environment environment = new Environment("test env", Jackson.newObjectMapper(), null, null, null);
+    private Environment environment = new Environment("test env", Jackson.newObjectMapper(), null, new MetricRegistry(), null);
     public final JerseyEnvironment jerseyEnvironment = environment.jersey();
 
     private AutoConfig autoConfig;

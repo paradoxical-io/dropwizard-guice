@@ -1,5 +1,6 @@
 package io.paradoxical.dropwizard.guice.tests;
 
+import com.codahale.metrics.MetricRegistry;
 import com.google.inject.Injector;
 import com.squarespace.jersey2.guice.JerseyGuiceUtils;
 import io.dropwizard.Configuration;
@@ -39,7 +40,7 @@ public class GuiceBundleTest {
     @Before
     public void setUp() throws Exception {
         //given
-        environment = new Environment("test env", Jackson.newObjectMapper(), null, null, null);
+        environment = new Environment("test env", Jackson.newObjectMapper(), null, new MetricRegistry(), null);
 
         guiceBundle = new GuiceBundle<>(
             GuiceEnvironmentConfiguration.builder()

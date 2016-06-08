@@ -40,8 +40,38 @@
 
         <java.version>1.8</java.version>
 
-        <dropwizard.version>1.0.0-rc2</dropwizard.version>
+        <!-- General -->
+
+        <annotations.version>3.0.0</annotations.version>
+
+        <!-- Dropwizard Stuff -->
+
+        <dropwizard.version>1.0.0-rc3</dropwizard.version>
+
+
+        <!-- Google Stuff -->
+
+        <guice.version>4.0</guice.version>
+        <guice-servlet.version>${guice.version}</guice-servlet.version>
+        <guava.version>19.0</guava.version>
+
+        <junit.version>4.12</junit.version>
+        <mockito-core.version>1.10.19</mockito-core.version>
+        <assertj-core.version>3.3.0</assertj-core.version>
+
         <maven.source.plugin.version>2.4</maven.source.plugin.version>
+
+        <javax.ws.rs-api.version>2.0.1</javax.ws.rs-api.version>
+        <hk2-api.version>2.4.0-b34</hk2-api.version>
+        <slf4j-api.version>1.7.12</slf4j-api.version>
+        <javax.inject.version>1</javax.inject.version>
+        <dropwizard-bundles.version>0.9.2</dropwizard-bundles.version>
+        <lombok.version>1.16.8</lombok.version>
+        <jersey2-guice-impl.version>1.0.6</jersey2-guice-impl.version>
+        <jersey-server.version>2.22.2</jersey-server.version>
+        <reflections.version>0.9.10</reflections.version>
+        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+        <metrics-healthchecks.version>3.1.2</metrics-healthchecks.version>
     </properties>
 
     <dependencies>
@@ -49,18 +79,21 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-            <version>1.16.8</version>
+            <version>${lombok.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.paradoxical</groupId>
             <artifactId>dropwizard-bundles</artifactId>
-            <version>0.9.2</version>
+            <version>${dropwizard-bundles.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>annotations</artifactId>
-            <version>3.0.0</version>
+            <version>${annotations.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
@@ -94,33 +127,36 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-healthchecks</artifactId>
-            <version>3.1.2</version>
+            <version>${metrics-healthchecks.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>aopalliance</groupId>
                     <artifactId>aopalliance</artifactId>
                 </exclusion>
             </exclusions>
-            <version>4.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
-            <version>4.0</version>
+            <version>${guice-servlet.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>2.22.2</version>
+            <version>${jersey-server.version}</version>
         </dependency>
         <dependency>
             <groupId>com.squarespace.jersey2-guice</groupId>
             <artifactId>jersey2-guice-impl</artifactId>
-            <version>1.0.6</version>
+            <version>${jersey2-guice-impl.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.glassfish.jersey.containers</groupId>
@@ -131,55 +167,55 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
+            <version>${reflections.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
+            <version>${javax.servlet-api.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <version>${javax.inject.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.hk2</groupId>
             <artifactId>hk2-api</artifactId>
-            <version>2.4.0-b34</version>
+            <version>${hk2-api.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0.1</version>
+            <version>${javax.ws.rs-api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>19.0</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-            <version>4.12</version>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
-            <version>1.10.19</version>
+            <version>${mockito-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
-            <version>3.3.0</version>
+            <version>${assertj-core.version}</version>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
