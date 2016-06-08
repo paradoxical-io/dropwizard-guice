@@ -4,7 +4,8 @@
 
 
 Forked from [HubSpot/Dropwizard-Guice](https://github.com/HubSpot/dropwizard-guice) and repurposed (they did all the hard work)
-A simple DropWizard extension for integrating Guice via a bundle. It optionally uses classpath 
+
+A simple DropWizard extension for integrating Guice via a bundle. It optionally uses classpath
 scanning courtesy of the Reflections project to discover resources and more to install into 
 the dropwizard environment upon service start.
 
@@ -19,7 +20,10 @@ the dropwizard environment upon service start.
 </dependencies>
 ```
 
-A list of available versions can be found at https://github.com/HubSpot/dropwizard-guice/releases
+A list of available versions can be found under the [release tab] or on [maven central]
+
+[release tab]: https://github.com/paradoxical-io/dropwizard-guice/releases
+[maven central]: http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22io.paradoxical%22%20AND%20a%3A%22dropwizard-guice%22
 
 Simply install a new instance of the bundle during your service initialization
 ```java
