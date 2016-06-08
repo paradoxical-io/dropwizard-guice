@@ -52,6 +52,11 @@
             <version>1.16.8</version>
         </dependency>
         <dependency>
+            <groupId>io.paradoxical</groupId>
+            <artifactId>dropwizard-bundles</artifactId>
+            <version>0.9.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>annotations</artifactId>
             <version>3.0.0</version>
@@ -211,6 +216,26 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.paradoxical</groupId>
+                <artifactId>resolved-pom-maven-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <properties>
+                        <revision>${revision}</revision>
+                        <dropwizard.version>${dropwizard.version}</dropwizard.version>
+                    </properties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>resolve-my-pom</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>resolve-pom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <distributionManagement>
@@ -273,7 +298,7 @@
                         <configuration>
                             <defaultKeyring>false</defaultKeyring>
                             <keyname>476C78DF</keyname>
-                            <passphrase>${env.GPG_PASSWORD}</passphrase>
+                            <passphraseServerId>gpg.key</passphraseServerId>
                             <publicKeyring>${project.basedir}/.deployment/gpg/paradoxical-io.pubgpg</publicKeyring>
                             <secretKeyring>${project.basedir}/.deployment/gpg/paradoxical-io-private.gpg</secretKeyring>
                         </configuration>

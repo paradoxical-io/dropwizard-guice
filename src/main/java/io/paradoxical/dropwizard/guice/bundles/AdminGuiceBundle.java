@@ -4,10 +4,11 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
+import io.paradoxical.dropwizard.bundles.admin.AdminBundle;
+import io.paradoxical.dropwizard.bundles.admin.AdminEnvironmentConfigurator;
+import io.paradoxical.dropwizard.bundles.admin.AdminResourceEnvironment;
 import io.paradoxical.dropwizard.guice.EnvironmentData;
 import io.paradoxical.dropwizard.guice.GuiceEnvironmentConfiguration;
-import io.paradoxical.dropwizard.guice.admin.AdminEnvironmentConfigurator;
-import io.paradoxical.dropwizard.guice.admin.AdminResourceEnvironment;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Singular;
@@ -16,13 +17,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
-public class AdminGuiceBundle<T extends Configuration> extends GuiceBundle<T> {
+public class AdminGuiceBundle<T extends Configuration> extends GuiceBundle<T> implements AdminEnvironmentConfigurator {
     private static final CharMatcher wildcardMatcher = CharMatcher.anyOf("/*");
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminGuiceBundle.class);
-
-    @Nonnull
+    private final AdminBundle adminBundle;
     private final ImmutableList<AdminEnvironmentConfigurator> environmentConfigurators;
-    private final String adminRootPath;
 
     @Builder
     public AdminGuiceBundle(
@@ -31,26 +30,19 @@ public class AdminGuiceBundle<T extends Configuration> extends GuiceBundle<T> {
         final ImmutableList<AdminEnvironmentConfigurator> environmentConfigurators,
         final String adminRootPath) {
         super(guiceEnvironmentConfiguration);
+        this.environmentConfigurators = environmentConfigurators;
 
-        this.environmentConfigurators = environmentConfigurators == null ? ImmutableList.of() : environmentConfigurators;
-        this.adminRootPath = adminRootPath == null ? "/admin" : wildcardMatcher.trimTrailingFrom(adminRootPath);
+        adminBundle = new AdminBundle(ImmutableList.of(this), adminRootPath);
     }
 
     @Override
-    public void run(final T configuration, final Environment environment) {
-        final AdminResourceEnvironment adminResourceEnvironment = new AdminResourceEnvironment(environment);
+    public void run(final T configuration, final Environment environment) throws Exception {
+        adminBundle.run(configuration, environment);
+    }
 
-        environment.admin()
-                   .addServlet(AdminGuiceBundle.class.getCanonicalName(),
-                               adminResourceEnvironment.jerseyContainerHolder().getContainer())
-                   .addMapping(adminRootPath + "/*");
-
+    @Override
+    public void configure(final Configuration configuration, final AdminResourceEnvironment adminResourceEnvironment) {
         setupEnvironmentGuice(configuration, EnvironmentData.admin(adminResourceEnvironment));
-        environmentConfigurators.forEach(configure -> configure.configure(configuration, adminResourceEnvironment));
-
-        LOGGER.info("Setup an admin environment at uri {}", adminRootPath);
-        adminResourceEnvironment.adminResourceConfig()
-                                .logComponents();
-
+        environmentConfigurators.forEach(config -> config.configure(configuration, adminResourceEnvironment));
     }
 }

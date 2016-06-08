@@ -18,7 +18,6 @@ import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore
 public class InjectedIntegrationTest {
 
     @Rule

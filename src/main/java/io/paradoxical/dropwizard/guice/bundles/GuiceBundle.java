@@ -34,13 +34,13 @@ public class GuiceBundle<T extends Configuration> implements ConfiguredBundle<T>
     }
 
     @Override
-    public void run(final T configuration, final Environment environment) {
+    public void run(final T configuration, final Environment environment) throws Exception {
         final EnvironmentData app = EnvironmentData.app(environment);
 
         setupEnvironmentGuice(configuration, app);
     }
 
-    protected void setupEnvironmentGuice(final T configuration, final EnvironmentData app) {
+    protected void setupEnvironmentGuice(final Configuration configuration, final EnvironmentData app) {
         guiceEnvironmentConfiguration.configureEnvironment(configuration, app);
     }
 

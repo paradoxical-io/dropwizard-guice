@@ -37,7 +37,7 @@ public class GuiceBundleTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         //given
         environment = new Environment("test env", Jackson.newObjectMapper(), null, null, null);
 

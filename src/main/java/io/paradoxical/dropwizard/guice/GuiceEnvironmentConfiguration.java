@@ -47,11 +47,11 @@ public class GuiceEnvironmentConfiguration {
 
         this.autoConfig = autoConfig;
 
-        if(configurationClass == null) {
+        if (configurationClass == null) {
             environmentModule = new DropwizardEnvironmentModule<>(Configuration.class);
         }
         else {
-            environmentModule = new DropwizardEnvironmentModule<>((Class<Configuration>)configurationClass);
+            environmentModule = new DropwizardEnvironmentModule<>((Class<Configuration>) configurationClass);
         }
 
         this.modules = ImmutableList.<Module>builder()
@@ -60,14 +60,13 @@ public class GuiceEnvironmentConfiguration {
             .addAll(modules)
             .build();
 
-        final Stage stage = guiceStage == null ? Stage.PRODUCTION : guiceStage;
+        final Stage stage = Optional.ofNullable(guiceStage).orElse(Stage.PRODUCTION);
 
         final com.google.common.base.Supplier<Injector> lazySupplier =
-            Suppliers.memoize(() -> initInjector(
-                stage,
-                Optional.ofNullable(injectorFactory)
-                        .orElseGet(DefaultInjectorFactory::new),
-                this.modules));
+            Suppliers.memoize(() -> initInjector(stage,
+                                                 Optional.ofNullable(injectorFactory)
+                                                         .orElseGet(DefaultInjectorFactory::new),
+                                                 this.modules));
 
         this.injectorSupplier = lazySupplier::get;
     }
