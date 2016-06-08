@@ -59,6 +59,7 @@ public class InjectedIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void shouldGetJitMessage() {
 
         // when
@@ -72,6 +73,7 @@ public class InjectedIntegrationTest {
     }
 
     @Test
+    @Ignore
     public void shouldRunInjectedBundle() {
         assertThat(Boolean.getBoolean(InjectedBundle.MARKER)).isTrue();
     }
