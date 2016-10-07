@@ -1,13 +1,13 @@
 package io.paradoxical.dropwizard.guice.jersey;
 
+import com.godaddy.logging.Logger;
+import com.godaddy.logging.LoggerFactory;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.servlet.GuiceFilter;
 import io.dropwizard.jetty.MutableServletContextHandler;
 import io.dropwizard.jetty.setup.ServletEnvironment;
 import org.glassfish.jersey.server.model.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Type;
@@ -16,7 +16,10 @@ import java.util.function.Consumer;
 /**
  * Functionality used to help link Guice with Jersey
  */
-public class JerseyUtil {
+public final class JerseyUtil {
+
+    private JerseyUtil() {
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(JerseyUtil.class);
 

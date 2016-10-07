@@ -8,6 +8,8 @@ import com.google.inject.Stage;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.paradoxical.dropwizard.bundles.admin.AdminEnvironmentConfigurator;
+import io.paradoxical.dropwizard.bundles.admin.AdminResourceEnvironment;
 import io.paradoxical.dropwizard.guice.jersey.JerseyModule;
 import io.paradoxical.dropwizard.guice.jersey.JerseyUtil;
 import lombok.Builder;
@@ -22,7 +24,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @Value
-public class GuiceEnvironmentConfiguration {
+public class GuiceEnvironmentConfiguration implements AdminEnvironmentConfigurator {
     private static final Logger logger = LoggerFactory.getLogger(GuiceEnvironmentConfiguration.class);
 
     private final AutoConfig autoConfig;
@@ -69,6 +71,11 @@ public class GuiceEnvironmentConfiguration {
                                                  this.modules));
 
         this.injectorSupplier = lazySupplier::get;
+    }
+
+    @Override
+    public void configure(final Configuration config, final AdminResourceEnvironment adminResourceEnvironment) {
+        configureEnvironment(config, EnvironmentData.admin(adminResourceEnvironment));
     }
 
     private static Injector initInjector(
