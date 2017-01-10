@@ -15,7 +15,7 @@ the dropwizard environment upon service start.
     <dependency>
         <groupId>io.paradoxical</groupId>
         <artifactId>dropwizard-guice</artifactId>
-        <version>1.0.0-rc3</version>
+        <version>1.0.5</version>
     </dependency>
 </dependencies>
 ```
