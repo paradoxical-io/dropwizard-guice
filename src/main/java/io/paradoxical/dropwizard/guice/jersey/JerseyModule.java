@@ -26,7 +26,7 @@ public class JerseyModule extends ServletModule {
     private static class HK2ServiceLocatorGeneratorInstaller {
         @Inject
         public HK2ServiceLocatorGeneratorInstaller(
-            final ServiceLocatorGenerator serviceLocatorGenerator) {
+                final ServiceLocatorGenerator serviceLocatorGenerator) {
 
             JerseyGuiceUtils.install(serviceLocatorGenerator);
         }
@@ -35,22 +35,17 @@ public class JerseyModule extends ServletModule {
     @Provides
     @Singleton
     public ServiceLocatorGenerator getLocatorGenerator(final Injector injector) {
-
-        return new ServiceLocatorGenerator() {
-
-            @Override
-            public ServiceLocator create(String name, ServiceLocator parent) {
-                if (!name.startsWith(HK2ModulePrefix)) {
-                    return null;
-                }
-
-                List<Module> modules = new ArrayList<>();
-
-                modules.add(new JerseyGuiceModule(name));
-
-                return injector.createChildInjector(modules)
-                               .getInstance(ServiceLocator.class);
+        return (name, parent) -> {
+            if (!name.startsWith(HK2ModulePrefix)) {
+                return null;
             }
+
+            List<Module> modules = new ArrayList<>();
+
+            modules.add(new JerseyGuiceModule(name));
+
+            return injector.createChildInjector(modules)
+                           .getInstance(ServiceLocator.class);
         };
     }
 

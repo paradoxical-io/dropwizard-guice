@@ -5,7 +5,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Stage;
+import io.dropwizard.Bundle;
 import io.dropwizard.Configuration;
+import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.paradoxical.dropwizard.bundles.admin.AdminEnvironmentConfigurator;
@@ -60,7 +62,7 @@ public class GuiceEnvironmentConfiguration implements AdminEnvironmentConfigurat
             .add(new JerseyModule())
             .add(environmentModule)
             .addAll(modules)
-            .build();
+            .build();   
 
         final Stage stage = Optional.ofNullable(guiceStage).orElse(Stage.PRODUCTION);
 
@@ -92,7 +94,33 @@ public class GuiceEnvironmentConfiguration implements AdminEnvironmentConfigurat
         }
     }
 
+    class SetEnvBundle implements Bundle {
+        @Override
+        public void initialize(final Bootstrap<?> bootstrap) {
+        }
+
+        @Override
+        public void run(final Environment environment) {
+            environmentModule.setEnvironmentData(null, environment);
+        }
+    }
+
+    class SetConfigBundle implements ConfiguredBundle<Configuration> {
+        @Override
+        public void run(final Configuration configuration, final Environment environment) throws Exception {
+            environmentModule.setEnvironmentData(configuration, environment);
+        }
+
+        @Override
+        public void initialize(final Bootstrap<?> bootstrap) {
+        }
+    }
+
     public void addBundles(final Bootstrap<? extends Configuration> bootstrap) {
+
+        bootstrap.addBundle(new SetEnvBundle());
+        bootstrap.addBundle(new SetConfigBundle());
+
         if (autoConfig != null) {
             autoConfig.addDiscoveredBundles(bootstrap, getInjector());
         }
